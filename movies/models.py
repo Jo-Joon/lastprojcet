@@ -15,7 +15,7 @@ class Movie(models.Model):
     summary = models.TextField(blank=True)
     poster_url = models.TextField(blank=True)
     backdrop_url = models.TextField(blank=True)
-    # directors = ArrayField(models.CharField(max_length=150), blank=True)
+    directors = models.CharField(max_length=500, blank=True)
     release_date = models.DateField(blank=True)
     actors = models.CharField(max_length=500, blank=True)
     genres = models.ManyToManyField(Genre, related_name='movies', blank=True)

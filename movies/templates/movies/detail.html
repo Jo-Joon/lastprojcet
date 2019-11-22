@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% comment %} {{ movie.actors }} {% endcomment %}
+  {% for actor in movie.actors %}
+    <p>{{ actor }}</p>
+  {% endfor %}
+{% endblock %}
