@@ -11,8 +11,10 @@ class Genre(models.Model):
 class Movie(models.Model):
     title = models.CharField(max_length=150)
     title_en = models.CharField(max_length=150)
-    audience = models.IntegerField()
     summary = models.TextField(blank=True)
+    audience = models.IntegerField(blank=True)
+    rate = models.CharField(max_length=50)
+    running_time = models.CharField(max_length=50)
     poster_url = models.TextField(blank=True)
     backdrop_url = models.TextField(blank=True)
     directors = models.CharField(max_length=500, blank=True)
