@@ -1,12 +1,15 @@
 {% extends 'base.html' %}
 {% load socialaccount %}
+{% load bootstrap4 %}
 
 {% block content %}
   <h1 text-center>Login</h1>
   <form action="" method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="작성">
+    {% bootstrap_form form %}
+    {% buttons %}      
+      {% buttons submit='OK' reset="Cancel" %}{% endbuttons %}
+    {% endbuttons %}
   </form>
   <a class="btn btn-warning" href="{% provider_login_url "kakao" %}">KAKAO</a>
   <a class="btn btn-dark text-light" href="{% provider_login_url "github" %}">GITHUB</a>

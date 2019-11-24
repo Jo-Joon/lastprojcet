@@ -19,6 +19,8 @@ class Movie(models.Model):
     release_date = models.DateField(blank=True)
     actors = models.CharField(max_length=500, blank=True)
     genres = models.ManyToManyField(Genre, related_name='movies', blank=True)
+    rate = models.CharField(max_length=50, blank=True)
+    running_time = models.CharField(max_length=50, blank=True)
     class Meta:
         ordering = ('-pk',)
     def __str__(self):
