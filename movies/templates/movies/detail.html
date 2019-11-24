@@ -1,8 +1,64 @@
 {% extends 'base.html' %}
+{% load bootstrap4 %}
 
 {% block content %}
-  {% comment %} {{ movie.actors }} {% endcomment %}
-  {% for actor in movie.actors %}
-    <p>{{ actor }}</p>
+<h2 class="text-center">{{ movie.title }}</h2>
+<a class="btn btn-primary" href="{% url 'movies:index' %}">back</a>
+<div class="w-50">
+  <div class="bd-example">
+    <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel" height="30px">
+      <ol class="carousel-indicators">
+        {% for actor in movie.actors.items %}
+        {% if forloop.first %}
+        <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+        {% else %}
+        <li data-target="#carouselExampleCaptions" data-slide-to="{{ forloop.counter0 }}"></li>
+        {% endif %}
+        {% endfor %}
+      </ol>
+      <div class="carousel-inner">
+        {% for actor, value in movie.actors.items %}
+        {% if forloop.first %}
+        <div class="carousel-item active">
+          {% else %}
+          <div class="carousel-item">
+            {% endif %}
+            <img src="{{ value.1 }}" class="d-block w-100" alt="actor_image">
+            <div class="carousel-caption">
+              <h5>{{ actor }}</h5>
+              <p>{{ value.0 }}</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <hr>
+  {% for rating in ratings %}
+    <p>{{ rating.score }} {{ rating.comment }}</p>
+    <form action="{% url 'movies:delete_rating' movie.pk rating.pk%}" method="POST">
+      {% csrf_token %}
+      <input type="submit" value="삭제">
+    </form>
+    <a href="{% url 'movies:update_rating' movie.pk rating.pk %}">Edit</a>
+    <hr>
   {% endfor %}
-{% endblock %}
+
+  <form action="{% url 'movies:rating' movie.pk %}" method="POST">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% buttons %}
+      {% buttons submit='OK'%}
+    {% endbuttons %}
+    {% endbuttons %}
+  </form>
+  {% endblock %}
