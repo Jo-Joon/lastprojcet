@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="text-center">영화 목록</h1>
+{% for movie in movies %}
+<div class="boxart-size-16x9 boxart-container">
+<br>
+<img class="mr-auto" src="{{ movie.poster_url }}" alt="" style="width: 130px; height: 200px;">
+  <div class="d-inline ml-auto">
+  {{ movie.title }}<br>
+  {{ movie.title_en }}
+  <br>
+  {{ movie.rate }}
+  <br>
+  {{ movie.running_time }}
+  <br>
+  {{ movie.release_date }}
+  <br>
+  {% for genre in movie.genres.all %}
+    | {{ genre }}
+  {% endfor %}
+    |
+  </div>
+  <hr>
+{% endfor %}
+{% endblock %}
