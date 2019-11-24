@@ -9,6 +9,7 @@ class Genre(models.Model):
         return self.name
 
 class Movie(models.Model):
+    movie_cd = models.CharField(max_length=50)
     title = models.CharField(max_length=150)
     title_en = models.CharField(max_length=150)
     audience = models.IntegerField()
