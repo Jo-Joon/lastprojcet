@@ -39,9 +39,13 @@
           .then(response => {
             document.querySelector(`#follow-count-${userId}`).innerText = response.data.count
             if (response.data.followed) {
-              event.target.style.color = 'blue'
-            } else {
               event.target.style.color = 'black'
+              event.target.value = 'unfollow'
+              console.log(event.target)
+            } else {
+              event.target.style.color = 'blue'
+              event.target.value = 'follow'
+              console.log(event.target)
             }
           })
       })
