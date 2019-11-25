@@ -1,4 +1,4 @@
-from django.http import Http404, HttpResponse
+from django.http import JsonResponse, Http404, HttpResponse
 from django.shortcuts import render,get_object_or_404, redirect
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
@@ -68,13 +68,16 @@ def update_rating(request, movie_pk, rating_pk):
 
 
 @login_required
-def like(request, movie_pk, where):
-    movie = get_object_or_404(Movie, pk=movie_pk)
-    if movie.like_users.filter(pk=request.user.pk).exists():
-        movie.like_users.remove(request.user)
+def like(request, movie_pk):
+    if request.is_ajax():
+        movie = get_object_or_404(Movie, pk=movie_pk)
+        if movie.like_users.filter(pk=request.user.pk).exists():
+            movie.like_users.remove(request.user)
+            liked = False
+        else:
+            movie.like_users.add(request.user)
+            liked = True
+        context = {'liked': liked, 'count': movie.like_users.count(),}
+        return JsonResponse
     else:
-        movie.like_users.add(request.user)
-    if where == 'index':
-        return redirect('movies:index')
-    elif where == 'detail':
         return redirect('movies:detail', movie_pk)
