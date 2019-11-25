@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import get_user_model, login as auth_login, logout as auth_logout
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import get_user_model, login as auth_login, logout as auth_logout, update_session_auth_hash
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
-from .forms import CustomUserCreationForm, CustomUserChangeForm
+from .forms import CustomUserCreationForm, CustomUserChangeForm, CustomUserChangeFormAdmin
+from django.views.decorators.http import require_POST
 
 # Create your views here.
 
@@ -53,11 +54,58 @@ def delete(request, user_pk):
 def update(request, user_pk):
     person = get_object_or_404(User, pk=user_pk)
     if request.method == 'POST':
-        form = CustomUserChangeForm(request.POST, instance=person)
+        form = CustomUserChangeFormAdmin(request.POST, instance=person)
         if form.is_valid():
             form.save()
             return redirect('accounts:index')        
     else:
-        form = CustomUserChangeForm(instance=person)
+        form = CustomUserChangeFormAdmin(instance=person)
+    context = {'form':form,}
+    return render(request, 'accounts/auth_form.html', context)
+
+def profile(request, username):
+    person = get_object_or_404(User, username=username)
+    context = {'person':person,}
+    return render(request, 'accounts/profile.html', context)
+
+@login_required
+def follow(request, user_pk):
+    person = get_object_or_404(User, pk=user_pk)
+    user = request.user
+    if person != user:
+        if person.followers.filter(pk=user.pk).exists():
+            person.followers.remove(user)
+        else:
+            person.followers.add(user)
+    return redirect('accounts:profile', person.username)
+
+@require_POST
+def delete_user(request):
+    if request.user.is_authenticated:
+        request.user.delete()
+    return redirect('movies:index')
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            return redirect('movies:index')
+    else:
+        form = PasswordChangeForm(request.user)
+    context = {'form':form,}
+    return render(request, 'accounts/auth_form.html', context)
+
+@login_required
+def update_user(request):
+    if request.method == 'POST':
+        form = CustomUserChangeForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('movies:index')        
+    else:
+        form = CustomUserChangeForm(instance=request.user)
     context = {'form':form,}
     return render(request, 'accounts/auth_form.html', context)

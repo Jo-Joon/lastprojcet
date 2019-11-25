@@ -12,11 +12,14 @@ def index(request):
     context = {'movies': movies,}
     return render(request, 'movies/index.html', context)
 
-
+    
 def detail(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk) 
-    print(json.dumps(movie.actors))
-    # movie.actors =  json.loads(movie.actors.replace("'", '"'))
+    movie.actors =  json.loads(movie.actors.replace("'", '"'))
+    copy_actors = {}
+    for actor,value in movie.actors.items():
+        copy_actors[actor.replace('@', "'")] = [value[0].replace('@', "'").replace('%', '"'), value[1]]
+    movie.actors = copy_actors
     form = RatingForm()
     ratings = movie.rating_set.all()
     context = {'movie':movie, 'form':form, 'ratings':ratings,}
@@ -62,3 +65,16 @@ def update_rating(request, movie_pk, rating_pk):
         return redirect('movies:detail', movie_pk)    
     context = {'form':form, 'rating':rating,}
     return render(request, 'movies/update_rating.html', context)
+
+
+@login_required
+def like(request, movie_pk, where):
+    movie = get_object_or_404(Movie, pk=movie_pk)
+    if movie.like_users.filter(pk=request.user.pk).exists():
+        movie.like_users.remove(request.user)
+    else:
+        movie.like_users.add(request.user)
+    if where == 'index':
+        return redirect('movies:index')
+    elif where == 'detail':
+        return redirect('movies:detail', movie_pk)
