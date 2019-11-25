@@ -5,7 +5,8 @@
   {% for movie in movies %}
   <div class="boxart-size-16x9 boxart-container col-3">
     <br>
-    <a href="{% url 'movies:detail' movie.pk %}"><img class="mr-auto" src="{{ movie.poster_url }}" alt="" style="width: 130px; height: 200px;"></a>
+    <a href="{% url 'movies:detail' movie.pk %}"><img class="mr-auto" src="{{ movie.poster_url }}" alt=""
+        style="width: 130px; height: 200px;"></a>
     {{ movie.title }}<br>
     {{ movie.title_en }}
     <br>
@@ -19,9 +20,19 @@
     | {{ genre }}
     {% endfor %}
     |
+    <p class="card-text">
+      <a href="{% url 'movies:like' movie.pk request.resolver_match.url_name %}">
+        {% if user in movie.like_users.all %}
+        <i class="fas fa-heart" style="color: crimson;"></i>
+        {% else %}
+        <i class="far fa-heart" style="color: black;"></i>
+        {% endif %}
+      </a>
+      {{ movie.like_users.all.count }}명이 이 글을 좋아합니다.
+    </p>
   </div>
-<hr>
-{% endfor %}
+  <hr>
+  {% endfor %}
 </div>
 
 {% endblock %}

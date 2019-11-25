@@ -8,4 +8,5 @@ urlpatterns = [
     path('<int:movie_pk>/rating/', views.create_rating, name='rating'),
     path('<int:movie_pk>/rating/<int:rating_pk>/', views.delete_rating, name='delete_rating'),
     path('<int:movie_pk>/rating/<int:rating_pk>/update/', views.update_rating, name='update_rating'),
+    path('<int:movie_pk>/like/<where>/', views.like, name='like')
 ]

@@ -5,6 +5,12 @@ class CustomUserChangeForm(UserChangeForm):
     password = None
     class Meta:
         model = get_user_model()  # return User
+        fields = ('email', )
+
+class CustomUserChangeFormAdmin(UserChangeForm):
+    password = None
+    class Meta:
+        model = get_user_model()  # return User
         fields = ('email', 'is_staff', )
 
 class CustomUserCreationForm(UserCreationForm):

@@ -22,6 +22,7 @@ class Movie(models.Model):
     genres = models.ManyToManyField(Genre, related_name='movies', blank=True)
     rate = models.CharField(max_length=50, blank=True)
     running_time = models.CharField(max_length=50, blank=True)
+    like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_movies', blank=True)
     class Meta:
         ordering = ('-pk',)
     def __str__(self):

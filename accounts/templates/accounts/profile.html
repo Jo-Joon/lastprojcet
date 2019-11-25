@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="jumbotron text-center">
+  <h1 class="display-4">{{ person.username }}</h1>
+  {% with followers=person.followers.all followings=person.followings.all %}
+  <p class="lead">
+    팔로잉 : {{ followings|length }} / 팔로워 : {{ followers|length }}
+  </p>
+  <hr class="my-4">
+  <p>Lorem ipsum dolor sit amet.</p>
+  {% if user != person %}
+  {% if user in followers %}
+  <a class="btn btn-primary btn-lg" href="{% url 'accounts:follow' person.pk %}" role="button">Unfollow</a>
+  {% else %}
+  <a class="btn btn-primary btn-lg" href="{% url 'accounts:follow' person.pk %}" role="button">Follow</a>
+  {% endif %}
+  {% endif %}
+  {% endwith %}
+  
+</div>
+{% endblock  %}
