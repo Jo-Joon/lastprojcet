@@ -30,19 +30,21 @@
     | {{ genre }}
     {% endfor %}
     |
-    <p class="card-text">
-      <a href="{% url 'movies:like' movie.pk request.resolver_match.url_name %}">
-        {% if user in movie.like_users.all %}
-        <i class="fas fa-heart" style="color: crimson;"></i>
-        {% else %}
-        <i class="far fa-heart" style="color: black;"></i>
-        {% endif %}
-      </a>
-      {{ movie.like_users.all.count }}명이 이 글을 좋아합니다.
-    </p>
   </div>
   <hr>
   {% endfor %}
 </div>
 
 {% endblock %}
+{% block script %}
+<script>
+  const index = new Vue({
+    el: '#app',
+    data: {
+    }.
+    methods: {
+
+    }
+  })
+</script>
+{% endblock script %}

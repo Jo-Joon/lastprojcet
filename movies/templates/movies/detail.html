@@ -5,11 +5,11 @@
 <h1 class="text-center">{{ movie.title }}</h1>
 <img class="w-100 mb-2" src="{{ movie.backdrop_url }}" alt="backdrop">
 <a class="btn btn-primary mb-2" href="{% url 'movies:index' %}">back</a>
-  <a class="btn btn-light m-0" href="{% url 'movies:like' movie.pk request.resolver_match.url_name %}">
+  {% comment %} <a class="btn btn-light m-0" href="{% url 'movies:like' movie.pk request.resolver_match.url_name %}"> {% endcomment %}
     {% if user in movie.like_users.all %}
-    <i class="fas fa-heart" style="color: crimson;"></i>
+    <i class="fas fa-heart like-button" style="color: crimson;" data-id="{{ movie.pk }}"></i>
     {% else %}
-    <i class="far fa-heart" style="color: black;"></i>
+    <i class="far fa-heart like-button" style="color: black;" data-id="{{ movie.pk }}"></i>
     {% endif %}
     {{ movie.like_users.all.count }}명이 이 글을 좋아합니다.
   </a>
@@ -71,3 +71,28 @@
     {% endbuttons %}
   </form>
   {% endblock %}
+  {% block script %}
+  <script>
+    const likeButtons = document.querySelectorAll('.like-button')
+    likeButtons.forEach(button => {
+      button.addEventListener('click', function (event) {
+        console.log(event)
+        const movieId = event.target.dataset.id
+        axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
+        axios.defaults.xsrfCookieName = 'csrftoken'
+        axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+        axios.post('/movies/${movieId}/like/')
+          .then(res => {
+            console.log(res)
+            document.querySelectorAll(`#like-count-${movieId}`).innerText = response.data.count
+            if (response.data.liked) {
+              event.target.style.color = 'crimson'
+            } else {
+              event.target.style.color = 'black'
+            }
+          })
+          .catch(error => console.log(error))
+      })
+    })
+  </script>
+  {% endblock script %} 
