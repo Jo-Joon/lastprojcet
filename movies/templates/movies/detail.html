@@ -6,14 +6,14 @@
 <img class="w-100 mb-2" src="{{ movie.backdrop_url }}" alt="backdrop">
 <a class="btn btn-primary mb-2" href="{% url 'movies:index' %}">back</a>
   {% comment %} <a class="btn btn-light m-0" href="{% url 'movies:like' movie.pk request.resolver_match.url_name %}"> {% endcomment %}
-  <p class="card-text">
-    {% if user in movie.like_users.all %}
-    <i class="fas fa-heart like-button" style="color: crimson;" data-id="{{ movie.pk }}"></i>
-    {% else %}
-    <i class="far fa-heart like-button" style="color: black;" data-id="{{ movie.pk }}"></i>
-    {% endif %}
-    <span id="like-count-{{ movie.pk }}">{{ movie.like_users.all|length }}</span> 명이 이 글을 좋아합니다.
-  </p>
+<p class="card-text">
+  {% if user in movie.like_users.all %}
+  <i class="fas fa-heart like-button" style="color: crimson;" data-id="{{ movie.pk }}"></i>
+  {% else %}
+  <i class="fas fa-heart like-button" style="color: black;" data-id="{{ movie.pk }}"></i>
+  {% endif %}
+  <span id="like-count-{{ movie.pk }}">{{ movie.like_users.all|length }}</span> 명이 이 글을 좋아합니다.
+</p>
 <div class="bd-example col-4 p-0">
   <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel" height="30px">
     <ol class="carousel-indicators">
@@ -71,6 +71,8 @@
     {% endbuttons %}
     {% endbuttons %}
   </form>
+  {% endblock %}
+  {% block script %}
   <script>
     const likeButtons = document.querySelectorAll('.like-button')
     likeButtons.forEach(button => {
@@ -93,6 +95,4 @@
       })
     })
   </script>
-  {% endblock %}
-  {% block script %}
   {% endblock script %} 

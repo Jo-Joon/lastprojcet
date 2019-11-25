@@ -1,16 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1 class="text-center">영화 목록</h1>
-{% if request.user.like_movies.all.count %}
-<h2>{{ last_like_movie }}에 좋아요를 하셨군요. 이런 영화는 어떤가요?</h2>
-<div class="row">
-  {% for recommend_movie in recommend_movies %}
-  <div class="card col-4 p-0">
-    <img src="{{ recommend_movie.poster_url }}" class="card-img-top" alt="...">
-  </div>
-  {% endfor %}
-</div>
-{% endif %}
 <div class="row">
   {% for movie in movies %}
   <div class="boxart-size-16x9 boxart-container col-3">
@@ -30,6 +20,7 @@
     | {{ genre }}
     {% endfor %}
     |
+    
   </div>
   <hr>
   {% endfor %}
@@ -43,7 +34,7 @@
     data: {
     }.
     methods: {
-
+      
     }
   })
 </script>
