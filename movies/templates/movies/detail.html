@@ -3,8 +3,18 @@
 
 {% block content %}
 <h1 class="text-center">{{ movie.title }}</h1>
-<img class="w-100" src="{{ movie.backdrop_url }}" alt="backdrop">
-<a class="btn btn-primary" href="{% url 'movies:index' %}">back</a>
+<img class="w-100 mb-2" src="{{ movie.backdrop_url }}" alt="backdrop">
+<a class="btn btn-primary mb-2" href="{% url 'movies:index' %}">back</a>
+  {% comment %} <a class="btn btn-light m-0" href="{% url 'movies:like' movie.pk request.resolver_match.url_name %}"> {% endcomment %}
+<p class="card-text">
+  {% if user in movie.like_users.all %}
+  <i class="fas fa-heart like-button" style="color: crimson;" data-id="{{ movie.pk }}"></i>
+  {% else %}
+  <i class="fas fa-heart like-button" style="color: black;" data-id="{{ movie.pk }}"></i>
+  {% endif %}
+  <span id="like-count-{{ movie.pk }}">{{ movie.like_users.all|length }}</span> 명이 이 글을 좋아합니다.
+</p>
+
 <div class="bd-example col-4 p-0">
   <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel" height="30px">
     <ol class="carousel-indicators">
@@ -62,3 +72,27 @@
     {% endbuttons %}
   </form>
   {% endblock %}
+  {% block script %}
+  <script>
+    const likeButtons = document.querySelectorAll('.like-button')
+    likeButtons.forEach(button => {
+      button.addEventListener('click', function (event) {
+        const movieId = event.target.dataset.id
+
+        axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
+        axios.defaults.xsrfCookieName = 'csrftoken'
+        axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+        axios.post(`/movies/${movieId}/like/`)
+          .then(response => {
+            console.log(response)
+            document.querySelector(`#like-count-${movieId}`).innerText = response.data.count
+            if (response.data.liked) {
+              event.target.style.color = 'crimson'
+            } else {
+              event.target.style.color = 'black'
+            }
+          })
+      })
+    })
+  </script>
+  {% endblock script %} 
