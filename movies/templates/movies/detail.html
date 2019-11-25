@@ -14,6 +14,7 @@
   {% endif %}
   <span id="like-count-{{ movie.pk }}">{{ movie.like_users.all|length }}</span> 명이 이 글을 좋아합니다.
 </p>
+
 <div class="bd-example col-4 p-0">
   <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel" height="30px">
     <ol class="carousel-indicators">
@@ -53,8 +54,7 @@
 
   <hr>
   {% for rating in ratings %}
-  <p>{{ rating.score }} | {{ rating.comment }} | <a
-      href="{% url 'accounts:profile' rating.user %}">{{ rating.user }}</a></p>
+  <p>{{ rating.score }} | {{ rating.comment }} | <a href="{% url 'accounts:profile' rating.user %}">{{ rating.user }}</a></p>
   <form action="{% url 'movies:delete_rating' movie.pk rating.pk%}" method="POST">
     {% csrf_token %}
     <input type="submit" value="삭제">

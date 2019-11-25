@@ -1,41 +1,59 @@
 {% extends 'base.html' %}
+{% load humanize %}
+
 {% block content %}
 <h1 class="text-center">영화 목록</h1>
-<div class="row">
+
+<div class="row mb-2">
   {% for movie in movies %}
-  <div class="boxart-size-16x9 boxart-container col-3">
-    <br>
-    <a href="{% url 'movies:detail' movie.pk %}"><img class="mr-auto" src="{{ movie.poster_url }}" alt=""
-        style="width: 130px; height: 200px;"></a>
-    {{ movie.title }}<br>
-    {{ movie.title_en }}
-    <br>
-    {{ movie.rate }}
-    <br>
-    {{ movie.running_time }}
-    <br>
-    {{ movie.release_date }}
-    <br>
-    {% for genre in movie.genres.all %}
-    | {{ genre }}
-    {% endfor %}
-    |
-    
+  <div class="col-sm-2 p-1" >
+    <div class="card card-flip h-100" style="background-color: rgba( 255, 255, 255, 0 );">
+      <div class="card-front text-white bg-dark" style="border-radius: 25px;" >
+        <img class="card-img-top" src="{{ movie.poster_url }}" alt="" style="border-radius: 25px;"> 
+      </div>
+      <div class="card-back bg-white" style="border-radius: 25px;">
+        <div class="card-body">
+          <b class="card-title">{{ movie.title }}</b><br>
+          {% for genre in movie.genres.all %}
+            <span class="badge badge-light">{{ genre }}</span>
+          {% endfor %}
+          <br>
+          <span class="badge badge-info">{{ movie.running_time }}</span><br>
+          <span class="badge badge-dark">{{ movie.rate }}</span> <br>
+          <span class="badge badge-dark">{{ movie.audience|intcomma }}명</span>
+          {{ movie.rating }}
+          <br>
+          <br>
+          <a href="{% url 'movies:detail' movie.pk %}" class="btn btn-outline-secondary">자세히</a>
+        </div>
+      </div>
+    </div>
   </div>
-  <hr>
   {% endfor %}
 </div>
 
+
+{% if request.user.like_movies.all.count %}
+<h2>{{ last_like_movie }}에 좋아요를 하셨군요. 이런 영화는 어떤가요?</h2>
+<div class="row justify-content-center">
+  {% for recommend_movie in recommend_movies %}
+    <div class="col-sm-4">
+    <div class="card card-flip h-100">
+      <div class="card-front text-white bg-dark">
+        <img class="card-img-top" src="{{ recommend_movie.poster_url }}" alt=""> 
+      </div>
+      <div class="card-back bg-white">
+        <div class="card-body">
+          <h3 class="card-title">{{ recommend_movie.title }}</h3>
+          <p class="card-text">{{ recommend_movie.summary }}</p>
+          <a href="{% url 'movies:detail' recommend_movie.pk %}" class="btn btn-outline-secondary">Action</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
 {% endblock %}
-{% block script %}
-<script>
-  const index = new Vue({
-    el: '#app',
-    data: {
-    }.
-    methods: {
-      
-    }
-  })
-</script>
-{% endblock script %}
+
