@@ -16,8 +16,67 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <style>
+    .MultiCarousel {
+      float: left;
+      overflow: hidden;
+      padding: 15px;
+      width: 100%;
+      position: relative;
+    }
+
+    .MultiCarousel .MultiCarousel-inner {
+      transition: 1s ease all;
+      float: left;
+    }
+
+    .MultiCarousel .MultiCarousel-inner .item {
+      float: left;
+    }
+
+    .MultiCarousel .MultiCarousel-inner .item>div {
+      text-align: center;
+      padding: 10px;
+      margin: 10px;
+      background: #f1f1f1;
+      color: #666;
+    }
+
+    .MultiCarousel .leftLst,
+    .MultiCarousel .rightLst {
+      position: absolute;
+      border-radius: 50%;
+      top: calc(50% - 20px);
+    }
+
+    .MultiCarousel .leftLst {
+      left: 0;
+    }
+
+    .MultiCarousel .rightLst {
+      right: 0;
+    }
+
+    .MultiCarousel .leftLst.over,
+    .MultiCarousel .rightLst.over {
+      pointer-events: none;
+    }
+
+    // non-related styling:
+
+    h1 {
+      color: white;
+      font-size: 2.25em;
+      text-align: center;
+      margin-top: 1em;
+      margin-bottom: 2em;
+      text-shadow: 0px 2px 0px rgba(0, 0, 0, 1);
+    }
+
     body {
       background-image: url("https://images.unsplash.com/photo-1572270907014-c31da1c54124?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2978&q=80");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-attachment: fixed;
     }
 
     .card-flip>div {
@@ -52,12 +111,13 @@
 
 <body>
   {% include '_nav.html' %}
+  <br>
+  <br>
+  <br>
   <div id="app" class="container">
     {% block content %}
     {% endblock %}
   </div>
-  {% block script %}
-  {% endblock script %}
   {% bootstrap_javascript jquery='full' %}
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -69,6 +129,8 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
   </script>
+  {% block script %}
+  {% endblock script %}
 </body>
 
 </html>

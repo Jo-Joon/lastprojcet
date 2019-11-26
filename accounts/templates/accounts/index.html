@@ -2,9 +2,6 @@
 
 {% block content %}
   <h1 class="text-center">Hello!! {{ user }}</h1>
-  <a href="{% url 'accounts:signup' %}">회원가입</a>
-  <a href="{% url 'accounts:login' %}">로그인</a>
-  <a href="{% url 'accounts:logout' %}">로그아웃</a>
   <div class="card">
     <ul class="list-group list-group-flush">
       {% for person in people %}

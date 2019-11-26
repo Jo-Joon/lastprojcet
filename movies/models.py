@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-from django.core.validators import validate_comma_separated_integer_list
+from django.core.validators import validate_comma_separated_integer_list, MinValueValidator, MaxValueValidator
 from django.contrib.postgres.fields import JSONField
 
 class Genre(models.Model):
@@ -29,7 +29,7 @@ class Movie(models.Model):
         return self.title    
 
 class Rating(models.Model):
+    score = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(10)])
     comment = models.TextField()
-    score = models.IntegerField()
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

@@ -1,98 +1,277 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
+{% load calculaters %}
 
 {% block content %}
-<h1 class="text-center">{{ movie.title }}</h1>
+<h1 class="text-center text-white m-0">{{ movie.title }}</h1>
+<br>
 <img class="w-100 mb-2" src="{{ movie.backdrop_url }}" alt="backdrop">
-<a class="btn btn-primary mb-2" href="{% url 'movies:index' %}">back</a>
-  {% comment %} <a class="btn btn-light m-0" href="{% url 'movies:like' movie.pk request.resolver_match.url_name %}"> {% endcomment %}
-<p class="card-text">
-  {% if user in movie.like_users.all %}
-  <i class="fas fa-heart like-button" style="color: crimson;" data-id="{{ movie.pk }}"></i>
-  {% else %}
-  <i class="fas fa-heart like-button" style="color: black;" data-id="{{ movie.pk }}"></i>
-  {% endif %}
-  <span id="like-count-{{ movie.pk }}">{{ movie.like_users.all|length }}</span> 명이 이 글을 좋아합니다.
-</p>
+<div class="row container m-0 p-0">
+  <a class="btn btn-primary mb-2" href="{% url 'movies:index' %}">back</a>
+  <p class="card-text text-white d-inline ml-auto">
+    {% if user in movie.like_users.all %}
+    <i class="fas fa-heart like-button" style="color: crimson;" data-id="{{ movie.pk }}"></i>
+    {% else %}
+    <i class="fas fa-heart like-button" style="color: white;" data-id="{{ movie.pk }}"></i>
+    {% endif %}
+    <span id="like-count-{{ movie.pk }}">{{ movie.like_users.all|length }}</span> 명이 이 영화를 좋아합니다.
+  </p>
+</div>
 
-<div class="bd-example col-4 p-0">
-  <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel" height="30px">
-    <ol class="carousel-indicators">
-      {% for actor in movie.actors %}
-      {% if forloop.first %}
-      <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
-      {% else %}
-      <li data-target="#carouselExampleCaptions" data-slide-to="{{ forloop.counter0 }}"></li>
-      {% endif %}
-      {% endfor %}
-    </ol>
-    <div class="carousel-inner">
-      {% for actor, value in movie.actors.items %}
-      {% if forloop.first %}
-      <div class="carousel-item active">
-        {% else %}
-        <div class="carousel-item">
-          {% endif %}
-          <img src="{{ value.1 }}" class="d-block w-100" alt="actor_image">
-          <div class="carousel-caption">
-            <h5>{{ actor }}</h5>
-            <p>{{ value.0 }}</p>
+<table class="table text-white">
+  <tbody>
+    <tr>
+      <th scope="row" width="20%">제목 </th>
+      <td>{{ movie.title }}</td>
+    </tr>
+    <tr>
+      <th scope="row">원제목</th>
+      <td>{{ movie.title_en }}</td>
+    </tr>
+    <tr>
+      <th scope="row">누적 관객 수</th>
+      <td>{{ movie.audience }}</td>
+    </tr>
+    <tr>
+      <th scope="row">줄거리</th>
+      <td>{{ movie.summary }}</td>
+    </tr>
+    <tr>
+      <th scope="row">개봉 날</th>
+      <td>{{ movie.release_date }}</td>
+    </tr>
+    <tr>
+      <th scope="row">관람 등급</th>
+      <td>{{ movie.rate }}</td>
+    </tr>
+    <tr>
+      <th scope="row">상영 시간</th>
+      <td>{{ movie.running_time }}</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+
+<div>
+  <p class="text-white m-0" style="font-size: 2em;">Directors/Actors</p>
+  <div class="row">
+    <div class="MultiCarousel py-0 px-2" data-items="3,3,5,6" data-slide="3" id="MultiCarousel">
+      <div class="MultiCarousel-inner">
+        {% for director, value in movie.directors.items %}
+        <div class="item">
+          <div class="directors p-0" style="background-color: rgba( 255, 255, 255, 0 );">
+            <img src="{{ value }}" class="d-block w-100" alt="director_image">
+            <h5 class="m-0 text-white">{{ director }}</h5>
+            <p class="m-0 text-white">director</p>
+          </div>
+        </div>
+        {% endfor %}
+        {% for actor, value in movie.actors.items %}
+        <div class="item">
+          <div class="actors p-0" style="background-color: rgba( 255, 255, 255, 0 );">
+            <img src="{{ value.1 }}" class="d-block w-100" alt="actor_image">
+            <h5 class="m-0 text-white">{{ actor }}</h5>
+            <p class="m-0 text-white">{{ value.0 }}</p>
           </div>
         </div>
         {% endfor %}
       </div>
-      <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
+      <button class="btn  leftLst">
+        <</button> <button class="btn rightLst">>
+      </button>
     </div>
   </div>
+</div>
+<hr>
 
-  <hr>
-  {% for rating in ratings %}
-  <p>{{ rating.score }} | {{ rating.comment }} | <a href="{% url 'accounts:profile' rating.user %}">{{ rating.user }}</a></p>
-  <form action="{% url 'movies:delete_rating' movie.pk rating.pk%}" method="POST">
-    {% csrf_token %}
-    <input type="submit" value="삭제">
-  </form>
-  <a href="{% url 'movies:update_rating' movie.pk rating.pk %}">Edit</a>
-  <hr>
-  {% endfor %}
 
+{% for rating in ratings %}
+<p class="d-inline">
+{% for num in rating.score|div %}
+<i class="fas fa-star text-warning"></i>
+{% endfor %}
+{% for num in rating.score|remainder %}
+<i class="fas fa-star-half-alt text-warning"></i>
+{% endfor %}
+{% for num in rating.score|empty %}
+<i class="far fa-star text-warning"></i>
+{% endfor %}
+ <span class="text-white">{{ rating.comment }} </span>  <a
+    href="{% url 'accounts:profile' rating.user %}">{{ rating.user }}</a>
+</p>
+<form class="d-inline" action="{% url 'movies:delete_rating' movie.pk rating.pk%}" method="POST">
+  {% csrf_token %}
+  <input class="btn btn-light d-inline" type="submit" value="삭제">
+</form>
+<a class="btn btn-light d-inline" href="{% url 'movies:update_rating' movie.pk rating.pk %}">Edit</a>
+<hr>
+{% endfor %}
+
+<div class="container">
   <form action="{% url 'movies:rating' movie.pk %}" method="POST">
     {% csrf_token %}
-    {% bootstrap_form form %}
+    {% bootstrap_form form label_class="col-md-3 col-form-label text-white"%}
     {% buttons %}
     {% buttons submit='OK'%}
+    <br>
+    <br>
     {% endbuttons %}
     {% endbuttons %}
   </form>
-  {% endblock %}
-  {% block script %}
-  <script>
-    const likeButtons = document.querySelectorAll('.like-button')
-    likeButtons.forEach(button => {
-      button.addEventListener('click', function (event) {
-        const movieId = event.target.dataset.id
+</div>
+{% endblock %}
+{% block script %}
+<script>
+  const likeButtons = document.querySelectorAll('.like-button')
+  likeButtons.forEach(button => {
+    button.addEventListener('click', function (event) {
+      const movieId = event.target.dataset.id
 
-        axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
-        axios.defaults.xsrfCookieName = 'csrftoken'
-        axios.defaults.xsrfHeaderName = 'X-CSRFToken'
-        axios.post(`/movies/${movieId}/like/`)
-          .then(response => {
-            console.log(response)
-            document.querySelector(`#like-count-${movieId}`).innerText = response.data.count
-            if (response.data.liked) {
-              event.target.style.color = 'crimson'
-            } else {
-              event.target.style.color = 'black'
-            }
-          })
-      })
+      axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
+      axios.defaults.xsrfCookieName = 'csrftoken'
+      axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+      axios.post(`/movies/${movieId}/like/`)
+        .then(response => {
+          console.log(response)
+          document.querySelector(`#like-count-${movieId}`).innerText = response.data.count
+          if (response.data.liked) {
+            event.target.style.color = 'crimson'
+          } else {
+            event.target.style.color = 'white'
+          }
+        })
     })
-  </script>
-  {% endblock script %} 
+  })
+
+  // Instantiate the Bootstrap carousel
+  $('.multi-item-carousel').carousel({
+    interval: false
+  });
+
+  // for every slide in carousel, copy the next slide's item in the slide.
+  // Do the same for the next, next item.
+  $('.multi-item-carousel .item').each(function () {
+    var next = $(this).next();
+    if (!next.length) {
+      next = $(this).siblings(':first');
+    }
+    next.children(':first-child').clone().appendTo($(this));
+
+    if (next.next().length > 0) {
+      next.next().children(':first-child').clone().appendTo($(this));
+    } else {
+      $(this).siblings(':first').children(':first-child').clone().appendTo($(this));
+    }
+  });
+
+  $(document).ready(function () {
+    var itemsMainDiv = ('.MultiCarousel');
+    var itemsDiv = ('.MultiCarousel-inner');
+    var itemWidth = "";
+
+    $('.leftLst, .rightLst').click(function () {
+      var condition = $(this).hasClass("leftLst");
+      if (condition)
+        click(0, this);
+      else
+        click(1, this)
+    });
+
+    ResCarouselSize();
+
+
+
+
+    $(window).resize(function () {
+      ResCarouselSize();
+    });
+
+    //this function define the size of the items
+    function ResCarouselSize() {
+      var incno = 0;
+      var dataItems = ("data-items");
+      var itemClass = ('.item');
+      var id = 0;
+      var btnParentSb = '';
+      var itemsSplit = '';
+      var sampwidth = $(itemsMainDiv).width();
+      var bodyWidth = $('body').width();
+      $(itemsDiv).each(function () {
+        id = id + 1;
+        var itemNumbers = $(this).find(itemClass).length;
+        btnParentSb = $(this).parent().attr(dataItems);
+        itemsSplit = btnParentSb.split(',');
+        $(this).parent().attr("id", "MultiCarousel" + id);
+
+
+        if (bodyWidth >= 1200) {
+          incno = itemsSplit[3];
+          itemWidth = sampwidth / incno;
+        } else if (bodyWidth >= 992) {
+          incno = itemsSplit[2];
+          itemWidth = sampwidth / incno;
+        } else if (bodyWidth >= 768) {
+          incno = itemsSplit[1];
+          itemWidth = sampwidth / incno;
+        } else {
+          incno = itemsSplit[0];
+          itemWidth = sampwidth / incno;
+        }
+        $(this).css({
+          'transform': 'translateX(0px)',
+          'width': itemWidth * itemNumbers
+        });
+        $(this).find(itemClass).each(function () {
+          $(this).outerWidth(itemWidth);
+        });
+
+        $(".leftLst").addClass("over");
+        $(".rightLst").removeClass("over");
+
+      });
+    }
+
+
+    //this function used to move the items
+    function ResCarousel(e, el, s) {
+      var leftBtn = ('.leftLst');
+      var rightBtn = ('.rightLst');
+      var translateXval = '';
+      var divStyle = $(el + ' ' + itemsDiv).css('transform');
+      var values = divStyle.match(/-?[\d\.]+/g);
+      var xds = Math.abs(values[4]);
+      if (e == 0) {
+        translateXval = parseInt(xds) - parseInt(itemWidth * s);
+        $(el + ' ' + rightBtn).removeClass("over");
+
+        if (translateXval <= itemWidth / 2) {
+          translateXval = 0;
+          $(el + ' ' + leftBtn).addClass("over");
+        }
+      } else if (e == 1) {
+        var itemsCondition = $(el).find(itemsDiv).width() - $(el).width();
+        translateXval = parseInt(xds) + parseInt(itemWidth * s);
+        $(el + ' ' + leftBtn).removeClass("over");
+
+        if (translateXval >= itemsCondition - itemWidth / 2) {
+          translateXval = itemsCondition;
+          $(el + ' ' + rightBtn).addClass("over");
+        }
+      }
+      $(el + ' ' + itemsDiv).css('transform', 'translateX(' + -translateXval + 'px)');
+    }
+
+    //It is used to get some elements from btn
+    function click(ell, ee) {
+      var Parent = "#" + $(ee).parent().attr("id");
+      var slide = $(Parent).attr("data-slide");
+      ResCarousel(ell, Parent, slide);
+    }
+
+  });
+</script>
+{% endblock script %}
