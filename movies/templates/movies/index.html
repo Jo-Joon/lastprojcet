@@ -5,9 +5,8 @@
 <h1 class="text-center text-white">영화 목록</h1>
 <div class="row mb-2">
   {% for movie in movies %}
-  <div class="col-sm-2 p-1">
+  <div class="col-4 col-sm-3 col-md-2 p-1">
     <a href="{% url 'movies:detail' movie.pk %}">
-
       <div class="card card-flip h-100" style="background-color: rgba( 255, 255, 255, 0 );">
         <div class="card-front text-white bg-dark" style="border-radius: 25px;">
           <img class="card-img-top" src="{{ movie.poster_url }}" alt="" style="border-radius: 25px;">
@@ -35,26 +34,26 @@
 
 
 {% if request.user.like_movies.all.count %}
-<h2>{{ last_like_movie }}에 좋아요를 하셨군요. 이런 영화는 어떤가요?</h2>
-<div class="row justify-content-center">
+<h2 class="text-white">{{ last_like_movie }}에 좋아요를 하셨군요. 이런 영화는 어떤가요?</h2>
+<div class="row justify-content-center text-center">
   {% for recommend_movie in recommend_movies %}
   <div class="col-sm-4">
-    <div class="card card-flip h-100">
-      <div class="card-front text-white bg-dark">
-        <img class="card-img-top" src="{{ recommend_movie.poster_url }}" alt="">
-      </div>
-      <div class="card-back bg-white">
-        <div class="card-body">
-          <h3 class="card-title">{{ recommend_movie.title }}</h3>
-          <p class="card-text">{{ recommend_movie.summary }}</p>
-          <a href="{% url 'movies:detail' recommend_movie.pk %}" class="btn btn-outline-secondary">Action</a>
+    <a href="{% url 'movies:detail' recommend_movie.pk %}">
+      <div class="card card-flip h-100" style="background-color: rgba( 255, 255, 255, 0 );">
+        <div class="card-front text-white bg-dark" style="border-radius: 25px;">
+          <img class="card-img-top" style="border-radius: 25px;" src="{{ recommend_movie.poster_url }}" alt="">
+        </div>
+        <div class="card-back bg-white scroll" style="overflow-y : scroll; border-radius: 25px;">
+          <div class="card-body">
+            <b class="card-title">{{ recommend_movie.title }}</b>
+            <p class="card-text text-dark">{{ recommend_movie.summary }}</p>
+          </div>
         </div>
       </div>
-    </div>
+    </a>
   </div>
   {% endfor %}
 </div>
 {% endif %}
 
 {% endblock %}
-
