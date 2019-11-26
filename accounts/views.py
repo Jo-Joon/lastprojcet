@@ -1,3 +1,4 @@
+from django.http import JsonResponse, Http404, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import get_user_model, login as auth_login, logout as auth_logout, update_session_auth_hash
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
@@ -70,14 +71,21 @@ def profile(request, username):
 
 @login_required
 def follow(request, user_pk):
-    person = get_object_or_404(User, pk=user_pk)
-    user = request.user
-    if person != user:
+    if request.is_ajax():
+        person = get_object_or_404(User, pk=user_pk)
+        user = request.user
+        # if person != user:
         if person.followers.filter(pk=user.pk).exists():
             person.followers.remove(user)
+            followed = False
         else:
             person.followers.add(user)
-    return redirect('accounts:profile', person.username)
+            followed = True
+        context = {'followed': followed, 'count': person.followers.count(),}
+        return JsonResponse(context)
+    else:
+        return HttpResponseBadRequest()
+
 
 @require_POST
 def delete_user(request):

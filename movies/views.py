@@ -1,4 +1,4 @@
-from django.http import JsonResponse, Http404, HttpResponse
+from django.http import JsonResponse, Http404, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render,get_object_or_404, redirect
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
@@ -87,6 +87,6 @@ def like(request, movie_pk):
             movie.like_users.add(request.user)
             liked = True
         context = {'liked': liked, 'count': movie.like_users.count(),}
-        return JsonResponse
+        return JsonResponse(context)
     else:
-        return redirect('movies:detail', movie_pk)
+        return HttpResponseBadRequest()
