@@ -2,31 +2,33 @@
 {% load humanize %}
 
 {% block content %}
-<h1 class="text-center">영화 목록</h1>
+<h1 class="text-center text-white">영화 목록</h1>
 <div class="row mb-2">
   {% for movie in movies %}
-  <div class="col-sm-2 p-1" >
-    <div class="card card-flip h-100" style="background-color: rgba( 255, 255, 255, 0 );">
-      <div class="card-front text-white bg-dark" style="border-radius: 25px;" >
-        <img class="card-img-top" src="{{ movie.poster_url }}" alt="" style="border-radius: 25px;"> 
-      </div>
-      <div class="card-back bg-white" style="border-radius: 25px;">
-        <div class="card-body">
-          <b class="card-title">{{ movie.title }}</b><br>
-          {% for genre in movie.genres.all %}
+  <div class="col-sm-2 p-1">
+    <a href="{% url 'movies:detail' movie.pk %}">
+
+      <div class="card card-flip h-100" style="background-color: rgba( 255, 255, 255, 0 );">
+        <div class="card-front text-white bg-dark" style="border-radius: 25px;">
+          <img class="card-img-top" src="{{ movie.poster_url }}" alt="" style="border-radius: 25px;">
+        </div>
+        <div class="card-back bg-white" style="border-radius: 25px;">
+          <div class="card-body">
+            <b class="card-title">{{ movie.title }}</b><br>
+            {% for genre in movie.genres.all %}
             <span class="badge badge-light">{{ genre }}</span>
-          {% endfor %}
-          <br>
-          <span class="badge badge-info">{{ movie.running_time }}</span><br>
-          <span class="badge badge-dark">{{ movie.rate }}</span> <br>
-          <span class="badge badge-dark">{{ movie.audience|intcomma }}명</span>
-          {{ movie.rating }}
-          <br>
-          <br>
-          <a href="{% url 'movies:detail' movie.pk %}" class="btn btn-outline-secondary">자세히</a>
+            {% endfor %}
+            <br>
+            <span class="badge badge-info">{{ movie.running_time }}</span><br>
+            <span class="badge badge-dark">{{ movie.rate }}</span> <br>
+            <span class="badge badge-dark">{{ movie.audience|intcomma }}명</span>
+            {{ movie.rating }}
+            <br>
+            <br>
+          </div>
         </div>
       </div>
-    </div>
+    </a>
   </div>
   {% endfor %}
 </div>
@@ -36,10 +38,10 @@
 <h2>{{ last_like_movie }}에 좋아요를 하셨군요. 이런 영화는 어떤가요?</h2>
 <div class="row justify-content-center">
   {% for recommend_movie in recommend_movies %}
-    <div class="col-sm-4">
+  <div class="col-sm-4">
     <div class="card card-flip h-100">
       <div class="card-front text-white bg-dark">
-        <img class="card-img-top" src="{{ recommend_movie.poster_url }}" alt=""> 
+        <img class="card-img-top" src="{{ recommend_movie.poster_url }}" alt="">
       </div>
       <div class="card-back bg-white">
         <div class="card-body">
