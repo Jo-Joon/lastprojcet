@@ -1,7 +1,10 @@
 from django import forms
 from .models import Rating
 
+INTEGER_CHOICES= [tuple([x,x]) for x in range(10, -1, -1)]
+
 class RatingForm(forms.ModelForm):
+    score = forms.IntegerField(min_value=0, max_value=10, widget=forms.Select(choices=INTEGER_CHOICES))
     class Meta:
         model = Rating
-        fields = ('comment', 'score')
+        fields = ('score', 'comment',)

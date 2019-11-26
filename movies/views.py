@@ -29,6 +29,7 @@ def detail(request, movie_pk):
     for actor,value in movie.actors.items():
         copy_actors[actor.replace('@', "'")] = [value[0].replace('@', "'").replace('%', '"'), value[1]]
     movie.actors = copy_actors
+    movie.directors = json.loads(movie.directors.replace("'", '"'))
     form = RatingForm()
     ratings = movie.rating_set.all()
     context = {'movie':movie, 'form':form, 'ratings':ratings,}

@@ -5,9 +5,15 @@
   <h1 text-center>Form</h1>
   <form action="" method="POST">
     {% csrf_token %}
-    {% bootstrap_form form layout="horizontal"%}
+    {% bootstrap_form form label_class="col-md-3 col-form-label text-white"%}
     {% buttons %}      
-      {% buttons submit='OK' reset="Cancel" %}{% endbuttons %}
+      {% buttons submit='OK' %}{% endbuttons %}
     {% endbuttons %}
+    {% if request.resolver_match.url_name  == 'update_user' %}
+      <form action="{% url 'accounts:delete_user' %}" method="POST" style="display: inline;">
+        {% csrf_token %}
+        <input type="submit" value="회원탈퇴" class="btn btn-danger">
+      </form>
+    {% endif %}
   </form>
 {% endblock  %}

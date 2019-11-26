@@ -11,6 +11,7 @@ from django.views.decorators.http import require_POST
 
 User = get_user_model()
 
+@staff_member_required
 def index(request):
     people = User.objects.all()
     context = {'people':people,}
