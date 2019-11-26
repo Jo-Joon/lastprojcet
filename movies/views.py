@@ -10,13 +10,15 @@ from random import choice, shuffle
 # Create your views here.
 def index(request):
     movies = Movie.objects.all()
-    if request.user.like_movies.all().count():
-        last_like_movie = choice(request.user.like_movies.all())
-        recommend_movies = list(Movie.objects.filter(genres=last_like_movie.genres.all()[0]).exclude(title=last_like_movie.title))
-        shuffle(recommend_movies)
-        context = {'movies': movies, 'last_like_movie':last_like_movie, 'recommend_movies':recommend_movies[:3],}
-    else:
-        context = {'movies': movies,}
+    if request.user.is_authenticated:
+        if request.user.like_movies.all().count():
+            last_like_movie = choice(request.user.like_movies.all())
+            recommend_movies = list(Movie.objects.filter(genres=last_like_movie.genres.all()[0]).exclude(title=last_like_movie.title))
+            shuffle(recommend_movies)
+            context = {'movies': movies, 'last_like_movie':last_like_movie, 'recommend_movies':recommend_movies[:3],}
+            return render(request, 'movies/index.html', context)
+    
+    context = {'movies': movies,}
     return render(request, 'movies/index.html', context)
 
     
