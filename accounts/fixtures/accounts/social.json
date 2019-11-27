@@ -1,0 +1,44 @@
+[
+{
+  "model": "socialaccount.socialapp",
+  "pk": 1,
+  "fields": {
+    "provider": "naver",
+    "name": "\ub124\uc774\ubc84 \ub85c\uadf8\uc778",
+    "client_id": "asU7BAQrxDffBusfOXxB",
+    "secret": "MOdDrbJHe0",
+    "key": "",
+    "sites": [
+      1
+    ]
+  }
+},
+{
+  "model": "socialaccount.socialapp",
+  "pk": 2,
+  "fields": {
+    "provider": "kakao",
+    "name": "\uce74\uce74\uc624\ub85c\uadf8\uc778",
+    "client_id": "1fda3fb53fe058d1d48a9c05695a6768",
+    "secret": "4jbrdVSGERD8XahkmducMKEPK9OAeUOn",
+    "key": "",
+    "sites": [
+      1
+    ]
+  }
+},
+{
+  "model": "socialaccount.socialapp",
+  "pk": 3,
+  "fields": {
+    "provider": "github",
+    "name": "\uae43\ud5c8\ube0c \ub85c\uadf8\uc778",
+    "client_id": "81a7f14db5b55c91bc39",
+    "secret": "86c8129141ad38aef03c162961d98984c4de9064",
+    "key": "",
+    "sites": [
+      1
+    ]
+  }
+}
+]
