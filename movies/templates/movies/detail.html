@@ -91,16 +91,16 @@
 
 {% for rating in ratings %}
 <p class="d-inline">
-{% for num in rating.score|div %}
-<i class="fas fa-star text-warning"></i>
-{% endfor %}
-{% for num in rating.score|remainder %}
-<i class="fas fa-star-half-alt text-warning"></i>
-{% endfor %}
-{% for num in rating.score|empty %}
-<i class="far fa-star text-warning"></i>
-{% endfor %}
- <span class="text-white">{{ rating.comment }} </span>  <a
+  {% for num in rating.score|div %}
+  <i class="fas fa-star text-warning"></i>
+  {% endfor %}
+  {% for num in rating.score|remainder %}
+  <i class="fas fa-star-half-alt text-warning"></i>
+  {% endfor %}
+  {% for num in rating.score|empty %}
+  <i class="far fa-star text-warning"></i>
+  {% endfor %}
+  <span class="text-white">{{ rating.comment }} </span> <a
     href="{% url 'accounts:profile' rating.user %}">{{ rating.user }}</a>
 </p>
 <form class="d-inline" action="{% url 'movies:delete_rating' movie.pk rating.pk%}" method="POST">

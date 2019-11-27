@@ -3,16 +3,16 @@
 {% load bootstrap4 %}
 
 {% block content %}
-  <h1 text-center>Login</h1>
+<div class="bg-dark p-5 col-6 login_div" style="border-radius: 25px;">
+  <h3 class="text-white">로그인</h3>
   <form action="" method="POST">
     {% csrf_token %}
-    {% bootstrap_form form %}
-    {% buttons %}      
-      {% buttons submit='OK' reset="Cancel" %}{% endbuttons %}
-    {% endbuttons %}
+    {% bootstrap_form form label_class="col-form-label text-white" %}
+    {% bootstrap_button "Login" button_type="submit" button_class="btn btn-primary w-100 mb-2" %}
   </form>
-  <a class="btn btn-warning" href="{% provider_login_url "kakao" %}">KAKAO</a>
-  <a class="btn btn-dark text-light" href="{% provider_login_url "github" %}">GITHUB</a>
-  <a class="btn btn-success" href="{% provider_login_url "naver" %}">NAVER</a>
-  
+  <a class="btn btn-warning mb-2 w-100" href="{% provider_login_url "kakao" %}">KAKAO</a><br>
+  <a class="btn btn-light text-dark mb-2 w-100" href="{% provider_login_url "github" %}">GITHUB</a><br>
+  <a class="btn btn-success mb-2 w-100"  href="{% provider_login_url "naver" %}">NAVER</a>
+</div>
+
 {% endblock  %}

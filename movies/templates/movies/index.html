@@ -5,7 +5,7 @@
 <h1 class="text-center text-white">영화 목록</h1>
 <div class="row mb-2">
   {% for movie in movies %}
-  <div class="col-4 col-sm-3 col-md-2 p-1">
+  <div class="col-4 col-sm-3 col-lg-2 p-1">
     <a href="{% url 'movies:detail' movie.pk %}">
       <div class="card card-flip h-100" style="background-color: rgba( 255, 255, 255, 0 );">
         <div class="card-front text-white bg-dark" style="border-radius: 25px;">

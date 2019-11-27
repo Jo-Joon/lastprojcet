@@ -22,7 +22,7 @@ def signup(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('accounts:index')
+            return redirect('accounts:login')
     else:
         form = CustomUserCreationForm()
     context = {'form':form,}
@@ -35,7 +35,7 @@ def login(request):
         form = AuthenticationForm(request, request.POST)
         if form.is_valid():
             auth_login(request, form.get_user())
-            return redirect(request.GET.get('next') or 'accounts:index')
+            return redirect(request.GET.get('next') or 'movies:index')
     else:
         form = AuthenticationForm()
     context = {'form':form}
@@ -44,7 +44,7 @@ def login(request):
 @login_required
 def logout(request):
     auth_logout(request)
-    return redirect('accounts:index')
+    return redirect('movies:index')
 
 @staff_member_required
 def delete(request, user_pk):
