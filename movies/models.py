@@ -18,7 +18,7 @@ class Movie(models.Model):
     backdrop_url = models.TextField(blank=True)
     directors = models.CharField(max_length=500, blank=True)
     release_date = models.DateField(blank=True)
-    actors = models.CharField(max_length=500, blank=True)
+    actors = models.TextField(blank=True)
     genres = models.ManyToManyField(Genre, related_name='movies', blank=True)
     rate = models.CharField(max_length=50, blank=True)
     running_time = models.CharField(max_length=50, blank=True)
