@@ -5,6 +5,9 @@
 {% block content %}
 <h1 class="text-center text-white m-0">{{ movie.title }}</h1>
 <br>
+<div id="youtube">
+  <iframe :src="getUrl" width="1110" height="624" frameborder="0"></iframe>
+</div>
 <img class="w-100 mb-2" src="{{ movie.backdrop_url }}" alt="backdrop">
 <div class="row container m-0 p-0">
   <a class="btn btn-primary mb-2" href="{% url 'movies:index' %}">back</a>
@@ -126,6 +129,24 @@
 {% endblock %}
 {% block script %}
 <script>
+  const app = new Vue({
+    el: '#youtube',
+    data: {
+      movieId: '',
+      videoUrl: ''
+    },
+    computed: {
+      getUrl: function () {
+        axios.get(`https://api.themoviedb.org/3/movie/{{ movie.movie_cd }}/videos?api_key=ae2f91743e07bb1124d4c971051d712e&language=en-US`)
+          .then(res => {
+            this.movieId = res.data.results[0].key
+            this.videoUrl = `https://www.youtube.com/embed/${this.movieId}`
+            console.log(this.videoUrl)
+          })
+          return  this.videoUrl
+      }
+    }
+  })
   const likeButtons = document.querySelectorAll('.like-button')
   likeButtons.forEach(button => {
     button.addEventListener('click', function (event) {
