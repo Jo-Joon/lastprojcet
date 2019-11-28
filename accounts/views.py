@@ -96,6 +96,7 @@ def delete_user(request):
         request.user.delete()
     return redirect('movies:index')
 
+
 @login_required
 def change_password(request):
     if request.method == 'POST':
