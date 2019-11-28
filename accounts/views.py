@@ -17,6 +17,7 @@ def index(request):
     context = {'people':people,}
     return render(request, 'accounts/index.html', context)
 
+
 def signup(request):
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
