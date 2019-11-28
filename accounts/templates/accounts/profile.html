@@ -1,54 +1,97 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
 {% block content %}
+
 <div class="jumbotron text-center">
   <h1 class="display-4">{{ person.username }}</h1>
   {% with followers=person.followers.all followings=person.followings.all %}
   <hr class="my-4">
-  <p>Lorem ipsum dolor sit amet.</p>
   <p class="card-text">
-  {% if user != person %}
+    {% if user != person %}
     {% if user in person.followers.all %}
-      <input class="btn btn-link btn-lg follow-button" style="color: black;" data-id="{{ person.pk }}" value="unfollow"></input>
+    <input class="btn btn-link btn-lg follow-button" style="color: black;" data-id="{{ person.pk }}"
+      value="unfollow"></input>
     {% else %}
-      <input class="btn btn-link btn-lg follow-button" style="color: blue;" data-id="{{ person.pk }}" value="follow"></input>
+    <input class="btn btn-link btn-lg follow-button" style="color: blue;" data-id="{{ person.pk }}"
+      value="follow"></input>
     {% endif %}
-  {% endif %}
-  <br>
-  팔로워: <span id="follow-count-{{ person.pk }}">
-  {{ person.followers.all|length }}</span>/ 팔로잉: {{ person.followings.all|length }}
-  </span>
-</p>
+    {% endif %}
+    <br>
+    팔로워: <span id="follow-count-{{ person.pk }}">
+      {{ person.followers.all|length }}</span>/ 팔로잉: {{ person.followings.all|length }}
+    </span>
+    {% endwith %}
+</div>
+<h2 class="text-white">{{ person.username }}님이 좋아요한 영화</h2>
+<div class="row mb-2">
+  {% for movie in movies %}
+  <div class="col-4 col-sm-3 col-lg-2 p-1">
+    <a href="{% url 'movies:detail' movie.pk %}">
+      <div class="card card-flip h-100" style="background-color: rgba( 255, 255, 255, 0 );">
+        <div class="card-front text-white bg-dark" style="border-radius: 25px;">
+          <img class="card-img-top" src="{{ movie.poster_url }}" alt="" style="border-radius: 25px;">
+        </div>
+        <div class="card-back bg-white" style="border-radius: 25px;">
+          <div class="card-body">
+            <b class="card-title">{{ movie.title }}</b><br>
+            {% for genre in movie.genres.all %}
+            <span class="badge badge-light">{{ genre }}</span>
+            {% endfor %}
+            <br>
+            <span class="badge badge-info">{{ movie.running_time }}</span><br>
+            <span class="badge badge-dark">{{ movie.rate }}</span> <br>
+            <span class="badge badge-dark">{{ movie.audience|intcomma }}명</span>
+            {{ movie.rating }}
+            <br>
+            <br>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+  {% endfor %}
+</div>
 
+
+{% with followings=person.followings.all %}
+<div class="card" style="background-color: rgba( 255, 255, 255, 0 );">
+  <h2 class="text-white">{{ person.username }}'s Followings</h2>
+  {% for following in followings %}
+  <ul class="list-group list-group-flush mb-3 row">
+    <a class="text-dark text-decoration-none" href="{% url 'accounts:profile' person.username %}">
+      <li class="list-group-item" style="border-radius:10px;">{{ following.username }} </li>
+    </a>
+  </ul>
+  {% endfor %}
   {% endwith %}
-  
 </div>
 {% endblock  %}
 
-  {% block script %}
-  <script>
-    const followButtons = document.querySelectorAll('.follow-button')
-    followButtons.forEach(button => {
-      button.addEventListener('click', function (event) {
-        const userId = event.target.dataset.id
+{% block script %}
+<script>
+  const followButtons = document.querySelectorAll('.follow-button')
+  followButtons.forEach(button => {
+    button.addEventListener('click', function (event) {
+      const userId = event.target.dataset.id
 
-        axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
-        axios.defaults.xsrfCookieName = 'csrftoken'
-        axios.defaults.xsrfHeaderName = 'X-CSRFToken'
-        axios.post(`/accounts/${userId}/follow/`)
-          .then(response => {
-            document.querySelector(`#follow-count-${userId}`).innerText = response.data.count
-            if (response.data.followed) {
-              event.target.style.color = 'black'
-              event.target.value = 'unfollow'
-              console.log(event.target)
-            } else {
-              event.target.style.color = 'blue'
-              event.target.value = 'follow'
-              console.log(event.target)
-            }
-          })
-      })
+      axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
+      axios.defaults.xsrfCookieName = 'csrftoken'
+      axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+      axios.post(`/accounts/${userId}/follow/`)
+        .then(response => {
+          document.querySelector(`#follow-count-${userId}`).innerText = response.data.count
+          if (response.data.followed) {
+            event.target.style.color = 'black'
+            event.target.value = 'unfollow'
+            console.log(event.target)
+          } else {
+            event.target.style.color = 'blue'
+            event.target.value = 'follow'
+            console.log(event.target)
+          }
+        })
     })
-  </script>
-  {% endblock script %} 
+  })
+</script>
+{% endblock script %}

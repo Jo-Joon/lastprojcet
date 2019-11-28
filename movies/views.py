@@ -61,6 +61,7 @@ def delete_rating(request, movie_pk, rating_pk):
 @login_required
 def update_rating(request, movie_pk, rating_pk):
     rating = get_object_or_404(Rating, pk=rating_pk)
+    movie = get_object_or_404(Movie, pk=movie_pk)
     if request.user == rating.user:
         if request.method == 'POST':
             form = RatingForm(request.POST, instance=rating)
@@ -74,7 +75,7 @@ def update_rating(request, movie_pk, rating_pk):
             form = RatingForm(instance=rating)
     else:
         return redirect('movies:detail', movie_pk)    
-    context = {'form':form, 'rating':rating,}
+    context = {'form':form, 'movie':movie, }
     return render(request, 'movies/update_rating.html', context)
 
 

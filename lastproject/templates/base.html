@@ -1,4 +1,7 @@
 {% load bootstrap4 %}
+{% load socialaccount %}
+{% load bootstrap4 %}
+
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -6,7 +9,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>Movie Aim</title>
   {% bootstrap_css %}
   
 
@@ -15,35 +18,12 @@
   <!-- axios -->
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <style>
-  
-    .swiper-container {
-        width:1020px;
-        margin:0 auto;
-        padding-bottom: 50px;
-        overflow:visible;
-    }
-    .swiper-slide {
-        background-position: center;
-        background-size: cover; 
-        width: 281px;
-        height: 655px;
-		align-items: center;
-    }
-    .swiper-slide-active {
-        background-position: center;
-        background-size: cover; 
-        width: 435px;
-        height: 655px;
-		align-items: center;
-		transform:translate3d(-75px, 0px, 0px) !important;
-    }
-	.swiper-slide.swiper-slide-prev{
-	transform:translate3d(-80px, 0px, 0px) rotateY(0deg) !important;}
-	
-	.swiper-slide.swiper-slide-next{
-	transform:translate3d(-50px, 0px, 0px) rotateY(0deg) !important;} 
-	
-    
+    @font-face {
+      font-family: 'DungGeunMo';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/DungGeunMo.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+    } 
     .login_div {
       position: absolute;
       top: 20%;
@@ -109,10 +89,11 @@
     }
 
     body {
-      background-image: url("https://images.unsplash.com/photo-1572270907014-c31da1c54124?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2978&q=80");
+      background-image: url("http://www.graciaviva.cat/png/big/13/138994_pixel-art-space-background.jpg");
       background-repeat: no-repeat;
       background-position: center;
       background-attachment: fixed;
+      font-family: 'DungGeunMo';
     }
 
     .card-flip>div {
