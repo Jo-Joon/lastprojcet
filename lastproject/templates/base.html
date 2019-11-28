@@ -8,14 +8,42 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
   {% bootstrap_css %}
+  
+
   <!-- font awesome -->
   <script src="https://kit.fontawesome.com/d00b3497dc.js" crossorigin="anonymous"></script>
   <!-- axios -->
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <!-- bootstrap -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <style>
+  
+    .swiper-container {
+        width:1020px;
+        margin:0 auto;
+        padding-bottom: 50px;
+        overflow:visible;
+    }
+    .swiper-slide {
+        background-position: center;
+        background-size: cover; 
+        width: 281px;
+        height: 655px;
+		align-items: center;
+    }
+    .swiper-slide-active {
+        background-position: center;
+        background-size: cover; 
+        width: 435px;
+        height: 655px;
+		align-items: center;
+		transform:translate3d(-75px, 0px, 0px) !important;
+    }
+	.swiper-slide.swiper-slide-prev{
+	transform:translate3d(-80px, 0px, 0px) rotateY(0deg) !important;}
+	
+	.swiper-slide.swiper-slide-next{
+	transform:translate3d(-50px, 0px, 0px) rotateY(0deg) !important;} 
+	
+    
     .login_div {
       position: absolute;
       top: 20%;
@@ -115,6 +143,9 @@
       transform: rotateY(0deg);
     }
   </style>
+  <!-- bootstrap -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 
 <body>
@@ -126,7 +157,6 @@
     {% block content %}
     {% endblock %}
   </div>
-  {% bootstrap_javascript jquery='full' %}
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
@@ -137,6 +167,7 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
   </script>
+  {% bootstrap_javascript jquery='full' %}
   {% block script %}
   {% endblock script %}
 </body>
