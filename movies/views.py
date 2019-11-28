@@ -3,22 +3,23 @@ from django.shortcuts import render,get_object_or_404, redirect
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from .models import Movie, Rating
-from .forms import RatingForm
+from .forms import RatingForm, MovieForm
 import json
 from random import choice, shuffle
 
 # Create your views here.
 def index(request):
     movies = Movie.objects.all()
+    genre_list = ['전체보기', '액션', '모험', '애니메이션', '코미디', '범죄', '다큐멘터리', '드라마', '가족', '판타지', '역사', '공포', '음악', '미스터리', '로맨스', 'SF', 'TV 영화', '스릴러', '전쟁', '서부']
     if request.user.is_authenticated:
         if request.user.like_movies.all().count():
             last_like_movie = choice(request.user.like_movies.all())
             recommend_movies = list(Movie.objects.filter(genres=last_like_movie.genres.all()[0]).exclude(title=last_like_movie.title))
             shuffle(recommend_movies)
-            context = {'movies': movies, 'last_like_movie':last_like_movie, 'recommend_movies':recommend_movies[:3],}
+            context = {'movies': movies, 'last_like_movie':last_like_movie, 'recommend_movies':recommend_movies[:3], 'genre_list': genre_list,}
             return render(request, 'movies/index.html', context)
     
-    context = {'movies': movies,}
+    context = {'movies': movies, 'genre_list': genre_list,}
     return render(request, 'movies/index.html', context)
 
     
@@ -92,3 +93,70 @@ def like(request, movie_pk):
         return JsonResponse(context)
     else:
         return HttpResponseBadRequest()
+
+def genre_movie(request, genre_nm):
+    movies = Movie.objects.all()
+    genre_list = ['전체보기', '액션', '모험', '애니메이션', '코미디', '범죄', '다큐멘터리', '드라마', '가족', '판타지', '역사', '공포', '음악', '미스터리', '로맨스', 'SF', 'TV 영화', '스릴러', '전쟁', '서부']
+    genre_movies = []
+    if genre_nm != '전체보기':
+        for movie in movies:
+            for genre in movie.genres.all():
+                if str(genre) == str(genre_nm):
+                    genre_movies.append(movie)
+    else:
+        genre_movies = movies
+    if request.user.is_authenticated:
+        if request.user.like_movies.all().count():
+            last_like_movie = choice(request.user.like_movies.all())
+            recommend_movies = list(Movie.objects.filter(genres=last_like_movie.genres.all()[0]).exclude(title=last_like_movie.title))
+            shuffle(recommend_movies)
+            context = {'movies': genre_movies, 'last_like_movie':last_like_movie, 'recommend_movies':recommend_movies[:3], 'genre_list': genre_list,}
+            return render(request, 'movies/index.html', context)
+    context = {'movies': genre_movies, 'genre_list': genre_list}
+    return render(request, 'movies/index.html', context)
+
+
+def search_movie(request):
+    movies = Movie.objects.all()
+    genre_list = ['전체보기', '액션', '모험', '애니메이션', '코미디', '범죄', '다큐멘터리', '드라마', '가족', '판타지', '역사', '공포', '음악', '미스터리', '로맨스', 'SF', 'TV 영화', '스릴러', '전쟁', '서부']
+    search_word = request.POST['search']
+    movie_list = []
+    for movie in movies:
+        if search_word in movie.title:
+            movie_list.append(movie)
+    if request.user.is_authenticated:
+        if request.user.like_movies.all().count():
+            last_like_movie = choice(request.user.like_movies.all())
+            recommend_movies = list(Movie.objects.filter(genres=last_like_movie.genres.all()[0]).exclude(title=last_like_movie.title))
+            shuffle(recommend_movies)
+            context = {'movies': movie_list, 'last_like_movie':last_like_movie, 'recommend_movies':recommend_movies[:3], 'genre_list': genre_list,}
+            return render(request, 'movies/index.html', context)
+    context = {'movies': movie_list}
+    return render(request, 'movies/index.html', context)
+
+
+@login_required
+def create_movie(request):
+    if request.method == 'POST':
+        form = MovieForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return render(request, 'movies/index.html')
+    else:
+        form = MovieForm()
+    context = {'form': form,}
+    return render(request, 'movies/form.html', context)
+
+
+@login_required
+def update_movie(request, movie_pk):
+    movie = get_object_or_404(Movie, pk=movie_pk)
+    if request.method == 'POST':
+        form = MovieForm(request.POST, instance=movie)
+        if form.is_valid():
+            movie.save()
+            return redirect('movies:detail', movie_pk)
+    else:
+        form = MovieForm(instance=movie)
+    context = {'form': form, 'movie': movie}
+    return render(request, 'movies/form.html', context)

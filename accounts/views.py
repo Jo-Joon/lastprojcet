@@ -119,3 +119,5 @@ def update_user(request):
         form = CustomUserChangeForm(instance=request.user)
     context = {'form':form,}
     return render(request, 'accounts/auth_form.html', context)
+
+

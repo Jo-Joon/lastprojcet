@@ -6,18 +6,28 @@
     <i class="fas fa-crosshairs"></i> Movie Aim
   </a>
 
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
-    aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
 
-  <div class="collapse navbar-collapse" id="navbarNav">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="justify-content-center">
+      <form action="{% url 'movies:search_movie' %}" method='POST' class="mt-1">
+        {% csrf_token %}
+        <input type="text" name="search">
+        <input type="submit" value="검색">
+      </form>
+    </div>
+    
+    <div class="collapse navbar-collapse" id="navbarNav">
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul class="navbar-nav">
         {% if user.is_staff %}
-        <li>
-          <a class="nav-link" href="{% url 'accounts:index' %}">유저관리</a>
-        </li>
+          <li>
+            <a class="nav-link" href="{% url 'accounts:index' %}">유저관리</a>
+          </li>
+          <li>
+            <a class="nav-link" href="{% url 'movies:create_movie' %}">영화 정보 생성</a>
+          </li>
         {% endif %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'accounts:profile' user.username %}">{{ user.username }}</a>
@@ -54,7 +64,6 @@
     </div>
     {% endif %}
 </nav>
-
 
 <div class="modal fade" id="Login" tabindex="-1" role="dialog" aria-labelledby="LoginLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
