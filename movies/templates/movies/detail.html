@@ -92,7 +92,7 @@
 {% for rating in ratings %}
 <p class="d-inline">
   {% for num in rating.score|div %}
-  <i class="fas fa-star text-warning"></i>
+    <i class="fas fa-star text-warning"></i>
   {% endfor %}
   {% for num in rating.score|remainder %}
   <i class="fas fa-star-half-alt text-warning"></i>

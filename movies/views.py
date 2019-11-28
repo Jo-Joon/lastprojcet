@@ -35,6 +35,7 @@ def detail(request, movie_pk):
     context = {'movie':movie, 'form':form, 'ratings':ratings,}
     return render(request, 'movies/detail.html', context)
 
+
 @require_POST
 def create_rating(request, movie_pk):
     if request.user.is_authenticated:
