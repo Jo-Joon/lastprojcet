@@ -17,6 +17,7 @@ def index(request):
     context = {'people':people,}
     return render(request, 'accounts/index.html', context)
 
+
 def signup(request):
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
@@ -94,6 +95,7 @@ def delete_user(request):
     if request.user.is_authenticated:
         request.user.delete()
     return redirect('movies:index')
+
 
 @login_required
 def change_password(request):
