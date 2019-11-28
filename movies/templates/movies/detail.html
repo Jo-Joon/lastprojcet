@@ -9,11 +9,12 @@
 <img class="w-100 mb-2" src="{{ movie.backdrop_url }}" alt="backdrop">
 <div class="row container m-0 p-0">
   <a class="btn btn-primary mb-2" href="{% url 'movies:index' %}">back</a>
-  {% if user.is_staff %}
-  <a class="btn btn-primary ml-2 mb-2" href="{% url 'movies:detail' movie.pk %}">영화 정보 삭제</a>
-  {% endif %}
 <button type="button" class="btn btn-primary fab fa-youtube ml-2 mb-2" data-toggle="modal" data-target=".bd-example-modal-xl">
 </button>
+  {% if user.is_staff %}
+  <a class="btn btn-primary ml-2 mb-2" href="{% url 'movies:update_movie' movie.pk %}">영화 정보 수정</a>
+  <a class="btn btn-primary ml-2 mb-2" href="{% url 'movies:detail' movie.pk %}">영화 정보 삭제</a>
+  {% endif %}
 <br>
 <!-- Modal -->
 <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
@@ -50,7 +51,7 @@
 <table class="table text-white">
   <tbody>
     <tr>
-      <th scope="row" width="20%">제목 </th>
+      <th scope="row" width="20%">제목</th>
       <td>{{ movie.title }}</td>
     </tr>
     <tr>
@@ -66,7 +67,7 @@
       <td>{{ movie.summary }}</td>
     </tr>
     <tr>
-      <th scope="row">개봉 날</th>
+      <th scope="row">개봉 날짜</th>
       <td>{{ movie.release_date }}</td>
     </tr>
     <tr>
@@ -150,9 +151,6 @@
 </div>
 {% endif %}
 
-{% if user.is_staff %}
-<a href="{% url 'movies:update_movie' movie.pk %}">영화 정보 수정</a>
-{% endif %}
 {% endblock %}
 {% block script %}
 <script>

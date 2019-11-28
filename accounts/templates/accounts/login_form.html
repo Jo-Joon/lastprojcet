@@ -3,11 +3,12 @@
 {% load bootstrap4 %}
 
 {% block content %}
-<div class="bg-dark p-5 col-6 login_div" style="border-radius: 25px;">
+<div class="p-5 col-6 m-auto" style="border-radius: 25px; background-color: rgba( 255, 255, 255, 0 );">
   <h3 class="text-white">로그인</h3>
   <form action="" method="POST">
     {% csrf_token %}
     {% bootstrap_form form label_class="col-form-label text-white" %}
+    <br><br>
     {% bootstrap_button "Login" button_type="submit" button_class="btn btn-primary w-100 mb-2" %}
   </form>
   <a class="btn btn-warning mb-2 w-100" href="{% provider_login_url "kakao" %}">KAKAO</a><br>

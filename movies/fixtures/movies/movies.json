@@ -2462,7 +2462,11 @@
 				"Seung-Hyeob Kim": "https://powerplants.com.au/wp-content/uploads/2017/04/no-profile-pic.jpg"
 			},
 			"release_date": "2019-11-21",
-			"genres": [],
+			"genres": [
+				35,
+				10751,
+				18
+			],
 			"actors": {}
 		}
 	},
