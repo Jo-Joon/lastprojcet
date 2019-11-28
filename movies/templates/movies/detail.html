@@ -5,20 +5,46 @@
 {% block content %}
 <h1 class="text-center text-white m-0">{{ movie.title }}</h1>
 <br>
-<div id="youtube">
-  <iframe :src="getUrl" width="1110" height="624" frameborder="0"></iframe>
-</div>
+<br>
 <img class="w-100 mb-2" src="{{ movie.backdrop_url }}" alt="backdrop">
 <div class="row container m-0 p-0">
   <a class="btn btn-primary mb-2" href="{% url 'movies:index' %}">back</a>
-  <p class="card-text text-white d-inline ml-auto">
+  {% if user.is_staff %}
+  <a class="btn btn-primary ml-2 mb-2" href="{% url 'movies:detail' movie.pk %}">영화 정보 삭제</a>
+  {% endif %}
+<button type="button" class="btn btn-primary fab fa-youtube ml-2 mb-2" data-toggle="modal" data-target=".bd-example-modal-xl">
+</button>
+<br>
+<!-- Modal -->
+<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">예고편</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="youtube">
+          <iframe :src="getUrl" class="w-100" height="300" frameborder="0" allowfullscreen></iframe>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+  <h3 class="card-text text-white d-inline ml-auto">
     {% if user in movie.like_users.all %}
     <i class="fas fa-heart like-button" style="color: crimson;" data-id="{{ movie.pk }}"></i>
     {% else %}
     <i class="fas fa-heart like-button" style="color: white;" data-id="{{ movie.pk }}"></i>
     {% endif %}
     <span id="like-count-{{ movie.pk }}">{{ movie.like_users.all|length }}</span> 명이 이 영화를 좋아합니다.
-  </p>
+  </h3>
 </div>
 
 <table class="table text-white">
@@ -126,6 +152,9 @@
     {% endbuttons %}
   </form>
 </div>
+{% if user.is_staff %}
+<a href="{% url 'movies:update_movie' movie.pk %}">영화 정보 수정</a>
+{% endif %}
 {% endblock %}
 {% block script %}
 <script>
@@ -140,7 +169,7 @@
         axios.get(`https://api.themoviedb.org/3/movie/{{ movie.movie_cd }}/videos?api_key=ae2f91743e07bb1124d4c971051d712e&language=en-US`)
           .then(res => {
             this.movieId = res.data.results[0].key
-            this.videoUrl = `https://www.youtube.com/embed/${this.movieId}`
+            this.videoUrl = `https://www.youtube.com/embed/${this.movieId}?version=3&enablejsapi=1`
             console.log(this.videoUrl)
           })
           return  this.videoUrl
@@ -292,7 +321,7 @@
       var slide = $(Parent).attr("data-slide");
       ResCarousel(ell, Parent, slide);
     }
-
+    
   });
 </script>
 {% endblock script %}
