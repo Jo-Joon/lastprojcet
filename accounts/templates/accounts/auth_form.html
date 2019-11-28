@@ -2,18 +2,32 @@
 {% load bootstrap4 %}
 
 {% block content %}
-  <h1 text-center>Form</h1>
-  <form action="" method="POST">
+{% if request.resolver_match.url_name == 'signup' %}
+<h2 class="text-white">회원가입</h2>
+{% else %}
+<h2 class="text-white">회원정보수정</h2>
+{% endif %}
+<form action="" method="POST">
+  {% csrf_token %}
+  {% bootstrap_form form form_group_class="text-white mb-3" label_class="col-md-3 col-form-label text-white"%}
+  {% bootstrap_button "OK" button_type="submit" button_class="btn-primary" %}
+  <a href="{% url 'accounts:index' %}" class="btn btn-primary text-white">BACK</a>
+  {% if user == person %}
+  <a class="btn btn-primary" href="{% url 'accounts:password' %}">비밀번호 변경</a>
+  {% endif %}
+
+  {% if request.resolver_match.url_name  == 'update_user' %}
+  <form action="{% url 'accounts:delete_user' %}" method="POST" style="display: inline;">
     {% csrf_token %}
-    {% bootstrap_form form label_class="col-md-3 col-form-label text-white"%}
-    {% buttons %}      
-      {% buttons submit='OK' %}{% endbuttons %}
-    {% endbuttons %}
-    {% if request.resolver_match.url_name  == 'update_user' %}
-      <form action="{% url 'accounts:delete_user' %}" method="POST" style="display: inline;">
-        {% csrf_token %}
-        <input type="submit" value="회원탈퇴" class="btn btn-danger">
-      </form>
-    {% endif %}
+    <input type="submit" value="회원탈퇴" class="btn btn-danger">
   </form>
+  {% endif %}
+
+  {% if request.resolver_match.url_name  == 'update' %}
+  <form action="{% url 'accounts:delete' person.pk %}" method="POST" style="display: inline;">
+    {% csrf_token %}
+    <input type="submit" value="유저삭제" class="btn btn-danger">
+  </form>
+  {% endif %}
+</form>
 {% endblock  %}

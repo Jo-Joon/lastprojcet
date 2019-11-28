@@ -1,4 +1,7 @@
 {% load bootstrap4 %}
+{% load socialaccount %}
+{% load bootstrap4 %}
+
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -6,7 +9,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>Movie Aim</title>
   {% bootstrap_css %}
   <!-- font awesome -->
   <script src="https://kit.fontawesome.com/d00b3497dc.js" crossorigin="anonymous"></script>
@@ -16,6 +19,13 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <style>
+    @font-face {
+      font-family: 'DungGeunMo';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/DungGeunMo.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+    }
+
     .login_div {
       position: absolute;
       top: 20%;
@@ -81,10 +91,11 @@
     }
 
     body {
-      background-image: url("https://images.unsplash.com/photo-1572270907014-c31da1c54124?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2978&q=80");
+      background-image: url("http://www.graciaviva.cat/png/big/13/138994_pixel-art-space-background.jpg");
       background-repeat: no-repeat;
       background-position: center;
       background-attachment: fixed;
+      font-family: 'DungGeunMo';
     }
 
     .card-flip>div {

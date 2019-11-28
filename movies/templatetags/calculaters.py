@@ -18,3 +18,11 @@ def empty( value ):
         return range(4 - value//2)
     else:
         return range(5 - value//2)
+
+@register.filter
+def star( value ):
+    return range(value)
+
+@register.filter
+def empty_star( value ):
+    return range(5-value)

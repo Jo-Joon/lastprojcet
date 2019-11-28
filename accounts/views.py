@@ -50,7 +50,7 @@ def logout(request):
 def delete(request, user_pk):
     del_user = get_object_or_404(User, pk=user_pk)
     del_user.delete()
-    return redirect('accounts:index')
+    return redirect('movies:index')
 
 @staff_member_required
 def update(request, user_pk):
@@ -62,12 +62,13 @@ def update(request, user_pk):
             return redirect('accounts:index')        
     else:
         form = CustomUserChangeFormAdmin(instance=person)
-    context = {'form':form,}
+    context = {'form':form, 'person':person}
     return render(request, 'accounts/auth_form.html', context)
 
 def profile(request, username):
     person = get_object_or_404(User, username=username)
-    context = {'person':person,}
+    movies = person.like_movies.all()
+    context = {'person':person, 'movies':movies,}
     return render(request, 'accounts/profile.html', context)
 
 @login_required

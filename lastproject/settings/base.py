@@ -25,6 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 INSTALLED_APPS = [
     'movies.apps.MoviesConfig',
     'accounts.apps.AccountsConfig',
+    'django_starfield',
     'django.contrib.humanize',
     'bootstrap4',
     'django.contrib.postgres',
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 SITE_ID = 1
+STARFIELD_STARS	= 5
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -135,6 +137,6 @@ STATIC_ROOT = 'static'
 
 AUTH_USER_MODEL = 'accounts.User'
 
-LOGIN_REDIRECT_URL = 'accounts:index'
+LOGIN_REDIRECT_URL = 'movies:index'
 
 

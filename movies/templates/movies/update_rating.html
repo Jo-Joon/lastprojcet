@@ -2,12 +2,11 @@
 {% load bootstrap4 %}
 
 {% block content %}
-  <h1 text-center>Update Rating</h1>
+  <h1 class="text-white">댓글 수정</h1>
   <form action="" method="POST">
     {% csrf_token %}
-    {% bootstrap_form form layout="horizontal"%}
-    {% buttons %}      
-      {% buttons submit='OK' reset="Cancel" %}{% endbuttons %}
-    {% endbuttons %}
+    {% bootstrap_form form label_class="col-md-3 col-form-label text-white d-block" %}
+    {% bootstrap_button "OK" button_type="submit" button_class="btn-primary" %}
+    <a href="{% url 'movies:detail' movie.pk %}" class="btn btn-primary text-white">BACK</a>
   </form>
 {% endblock  %}

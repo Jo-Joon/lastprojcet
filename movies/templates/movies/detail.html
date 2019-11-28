@@ -3,10 +3,11 @@
 {% load calculaters %}
 
 {% block content %}
+
 <h1 class="text-center text-white m-0">{{ movie.title }}</h1>
 <br>
 <div id="youtube">
-  <iframe :src="getUrl" width="1110" height="624" frameborder="0"></iframe>
+  <iframe :src="getUrl" width="100%" height="624" frameborder="0"></iframe>
 </div>
 <img class="w-100 mb-2" src="{{ movie.backdrop_url }}" alt="backdrop">
 <div class="row container m-0 p-0">
@@ -91,41 +92,38 @@
 </div>
 <hr>
 
-
 {% for rating in ratings %}
 <p class="d-inline">
-  {% for num in rating.score|div %}
+  {% for num in rating.score|star %}
   <i class="fas fa-star text-warning"></i>
   {% endfor %}
-  {% for num in rating.score|remainder %}
-  <i class="fas fa-star-half-alt text-warning"></i>
-  {% endfor %}
-  {% for num in rating.score|empty %}
+  {% for num in rating.score|empty_star %}
   <i class="far fa-star text-warning"></i>
   {% endfor %}
-  <span class="text-white">{{ rating.comment }} </span> <a
-    href="{% url 'accounts:profile' rating.user %}">{{ rating.user }}</a>
+  <span class="text-white">{{ rating.comment }} </span><br>
+  <a class="text-secondary" href="{% url 'accounts:profile' rating.user %}">{{ rating.user }}</a><span class="text-secondary"> | {{ rating.update_at }}</span>
 </p>
+<span class="text-secondary"> | 
+<a class="text-secondary" href="{% url 'movies:update_rating' movie.pk rating.pk %}">수정</a> | 
+</span>
 <form class="d-inline" action="{% url 'movies:delete_rating' movie.pk rating.pk%}" method="POST">
   {% csrf_token %}
-  <input class="btn btn-light d-inline" type="submit" value="삭제">
+  
+  <input class="d-inline text-secondary" style="background-color: rgba( 255, 255, 255, 0 ); border:0px;" type="submit" value="삭제">
 </form>
-<a class="btn btn-light d-inline" href="{% url 'movies:update_rating' movie.pk rating.pk %}">Edit</a>
 <hr>
 {% endfor %}
 
+{% if user.is_authenticated %}
 <div class="container">
   <form action="{% url 'movies:rating' movie.pk %}" method="POST">
     {% csrf_token %}
     {% bootstrap_form form label_class="col-md-3 col-form-label text-white"%}
-    {% buttons %}
     {% buttons submit='OK'%}
-    <br>
-    <br>
-    {% endbuttons %}
     {% endbuttons %}
   </form>
 </div>
+{% endif %}
 {% endblock %}
 {% block script %}
 <script>
@@ -137,13 +135,15 @@
     },
     computed: {
       getUrl: function () {
-        axios.get(`https://api.themoviedb.org/3/movie/{{ movie.movie_cd }}/videos?api_key=ae2f91743e07bb1124d4c971051d712e&language=en-US`)
+        axios.get(
+            `https://api.themoviedb.org/3/movie/{{ movie.movie_cd }}/videos?api_key=ae2f91743e07bb1124d4c971051d712e&language=en-US`
+            )
           .then(res => {
             this.movieId = res.data.results[0].key
             this.videoUrl = `https://www.youtube.com/embed/${this.movieId}`
             console.log(this.videoUrl)
           })
-          return  this.videoUrl
+        return this.videoUrl
       }
     }
   })

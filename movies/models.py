@@ -29,7 +29,9 @@ class Movie(models.Model):
         return self.title    
 
 class Rating(models.Model):
-    score = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(10)])
+    score = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
     comment = models.TextField()
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    update_at = models.DateTimeField(auto_now=True)
+

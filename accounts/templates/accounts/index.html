@@ -1,12 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1 class="text-center">Hello!! {{ user }}</h1>
-  <div class="card">
-    <ul class="list-group list-group-flush">
-      {% for person in people %}
-        <li class="list-group-item">{{ person.username }} <a href="{% url 'accounts:delete' person.pk %}">삭제</a>  <a href="{% url 'accounts:update' person.pk %}">업데이트</a></li>
-      {% endfor %}
-    </ul>
-  </div>
+<h1 class="text-center text-white">유저 관리</h1>
+<div class="card row" style="background-color: rgba( 255, 255, 255, 0 );">
+  {% for person in people %}
+  <ul class="list-group list-group-flush mb-3 row">
+    <a class="text-dark text-decoration-none" href="{% url 'accounts:update' person.pk %}" >
+      <li style="border-radius:10px;" class="list-group-item">{{ person.username }} </li>
+    </a>
+  </ul>
+  {% endfor %}
+
+</div>
 {% endblock  %}
