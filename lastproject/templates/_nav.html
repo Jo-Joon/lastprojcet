@@ -23,20 +23,20 @@
       <ul class="navbar-nav">
         {% if user.is_staff %}
           <li>
-            <a class="nav-link" href="{% url 'accounts:index' %}">유저관리</a>
+            <a class="nav-link m-0" href="{% url 'accounts:index' %}">유저관리</a>
           </li>
           <li>
-            <a class="nav-link" href="{% url 'movies:create_movie' %}">영화 정보 생성</a>
+            <a class="nav-link m-0" href="{% url 'movies:create_movie' %}">영화 정보 생성</a>
           </li>
         {% endif %}
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'accounts:profile' user.username %}">{{ user.username }}</a>
+          <a class="nav-link m-0" href="{% url 'accounts:profile' user.username %}">{{ user.username }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'accounts:update_user' %}">회원정보 수정</a>
+          <a class="nav-link m-0" href="{% url 'accounts:update_user' %}">회원정보 수정</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'accounts:logout' %}">로그아웃</a>
+          <a class="nav-link m-0" href="{% url 'accounts:logout' %}">로그아웃</a>
         </li>
         <li class="nav-item">
         </li>
@@ -54,10 +54,10 @@
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav">
           <li class="text-white nav-item" data-toggle="modal" data-target="#Login" style="cursor:pointer;">
-            <p class="nav-link">로그인</p>
+            <p class="nav-link m-0">로그인</p>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'accounts:signup' %}">회원가입</a>
+            <a class="nav-link m-0" href="{% url 'accounts:signup' %}">회원가입</a>
           </li>
         </ul>
       </div>
