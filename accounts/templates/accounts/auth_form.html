@@ -12,11 +12,10 @@
   {% bootstrap_form form form_group_class="text-white mb-3" label_class="col-md-3 col-form-label text-white"%}
   {% bootstrap_button "OK" button_type="submit" button_class="btn-primary" %}
   <a href="{% url 'accounts:index' %}" class="btn btn-primary text-white">BACK</a>
-  {% if user == person %}
-  <a class="btn btn-primary" href="{% url 'accounts:password' %}">비밀번호 변경</a>
-  {% endif %}
+
 
   {% if request.resolver_match.url_name  == 'update_user' %}
+  <a class="btn btn-primary" href="{% url 'accounts:password' %}">비밀번호 변경</a>
   <form action="{% url 'accounts:delete_user' %}" method="POST" style="display: inline;">
     {% csrf_token %}
     <input type="submit" value="회원탈퇴" class="btn btn-danger">
